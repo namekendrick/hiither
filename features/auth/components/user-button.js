@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { LogOut } from "lucide-react";
 import { FaUser } from "react-icons/fa";
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -33,7 +32,7 @@ export const UserButton = () => {
         align="end"
       >
         <Link href={"/profile/edit"}>
-          <div className="flex items-center px-3 text-sm font-bold transition-all hover:rounded-md hover:bg-slate-300/20">
+          <div className="flex items-center px-3 text-sm font-semibold transition-all hover:rounded-md hover:bg-slate-300/20">
             <div className="flex items-center gap-x-4 truncate py-3">
               <Avatar className="h-10 w-10">
                 <AvatarImage src={user?.image} />
@@ -46,10 +45,15 @@ export const UserButton = () => {
           </div>
         </Link>
         <Separator className="m-auto w-[90%]" />
+        <Link href="/workspace">
+          <div className="flex items-center p-3 text-sm font-semibold transition-all hover:rounded-md hover:bg-slate-300/20">
+            Publisher workspace
+          </div>
+        </Link>
+        <Separator className="m-auto w-[90%]" />
         <LogoutButton>
           <DropdownMenuItem className="cursor-pointer">
-            <LogOut className="mr-2 h-4 w-4" />
-            Sign out
+            <div className="px-1 text-muted-foreground">Sign out</div>
           </DropdownMenuItem>
         </LogoutButton>
       </DropdownMenuContent>
