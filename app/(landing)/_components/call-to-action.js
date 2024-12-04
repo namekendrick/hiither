@@ -9,10 +9,10 @@ export const CallToAction = () => {
       <h1 className="text-left text-[35px] font-semibold leading-tight md:text-center md:text-[55px] lg:text-[70px] xl:text-[80px]">
         Convert your traffic
         <br />
-        the <span className="text-indigo-500">human way</span>.
+        without being <span className="text-indigo-500">annoying</span>.
       </h1>
       <p className="text-left text-base text-muted-foreground md:text-center">
-        Hiither converts your visitors into engaged community members by{" "}
+        Hiither turns your visitors into engaged subscribers by{" "}
         <a
           href={process.env.NEXT_PUBLIC_LP_HREF}
           className="font-medium text-primary underline hover:decoration-indigo-500"
