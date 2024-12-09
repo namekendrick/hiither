@@ -45,6 +45,9 @@
           background-color: rgba(0, 0, 0, 0.2);
           z-index: 2147483646;
         }
+        body.panel-open {
+          overflow: hidden;
+        }
       `;
       document.head.append(style);
     }
@@ -86,6 +89,7 @@
 
     const handleLinkClick = (link) => {
       document.body.appendChild(overlay);
+      document.body.classList.add("panel-open");
 
       iframe.contentWindow.postMessage({ panelId: link.hash.slice(5) }, appUrl);
       iframe.style.transform = "translateX(0)";
@@ -97,8 +101,10 @@
           iframe.addEventListener(
             "transitionend",
             () => {
-              if (document.body.contains(overlay))
+              if (document.body.contains(overlay)) {
                 document.body.removeChild(overlay);
+                document.body.classList.remove("panel-open");
+              }
             },
             { once: true },
           );
