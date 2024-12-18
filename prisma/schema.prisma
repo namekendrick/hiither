@@ -27,6 +27,7 @@ model User {
   permissions           Permission[]
   subscription          Subscription?
   twoFactorConfirmation TwoFactorConfirmation?
+  oneTimeConfirmation   OneTimeConfirmation?
   views                 View[]
   votes                 Vote[]
 }
@@ -213,6 +214,15 @@ model UserPanelLimit {
   updatedAt DateTime @updatedAt
 }
 
+model OneTimeToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
 model PasswordResetToken {
   id      String   @id @default(cuid())
   email   String
@@ -238,6 +248,12 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model OneTimeConfirmation {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model TwoFactorConfirmation {

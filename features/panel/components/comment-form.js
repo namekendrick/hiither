@@ -15,11 +15,9 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { CommentSchema } from "@/features/panel/schemas";
 import { usePostComment } from "@/features/panel/hooks/use-post-comment";
-import { useAuthAction } from "@/hooks/use-auth-action";
 
 export const CommentForm = ({ comment, panelId, setIsReplying }) => {
   const mutation = usePostComment();
-  const handleAuthAction = useAuthAction();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm({

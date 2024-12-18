@@ -7,13 +7,7 @@ import { useCommentVote } from "@/features/panel/hooks/use-comment-vote";
 import { useAuthAction } from "@/hooks/use-auth-action";
 import { cn } from "@/lib/utils";
 
-export const CommentVotes = ({
-  commentId,
-  votesAmt,
-  currentVote,
-  panelId,
-  embed,
-}) => {
+export const CommentVotes = ({ commentId, votesAmt, currentVote, panelId }) => {
   const mutation = useCommentVote();
   const handleAuthAction = useAuthAction();
 
@@ -22,12 +16,7 @@ export const CommentVotes = ({
       {/* upvote */}
       <Button
         onClick={() =>
-          embed
-            ? window.open(
-                `${process.env.NEXT_PUBLIC_APP_URL}/p/${panelId}`,
-                "_blank",
-              )
-            : handleAuthAction(mutation.mutate({ type: "UP", commentId }))
+          handleAuthAction(mutation.mutate({ type: "UP", commentId }))
         }
         size="xs"
         variant="ghost"
@@ -48,12 +37,7 @@ export const CommentVotes = ({
       {/* downvote */}
       <Button
         onClick={() =>
-          embed
-            ? window.open(
-                `${process.env.NEXT_PUBLIC_APP_URL}/p/${panelId}`,
-                "_blank",
-              )
-            : handleAuthAction(mutation.mutate({ type: "DOWN", commentId }))
+          handleAuthAction(mutation.mutate({ type: "DOWN", commentId }))
         }
         size="xs"
         className={cn({

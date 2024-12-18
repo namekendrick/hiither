@@ -78,13 +78,13 @@ export const Combobox = () => {
           </Command>
         </PopoverContent>
       </Popover>
-      {current?.id && (
+      {/* {current?.id && (
         <Link href={`/c/${current.id}`}>
           <Button variant="link" className="text-xs">
             View community page
           </Button>
         </Link>
-      )}
+      )} */}
     </div>
   );
 };

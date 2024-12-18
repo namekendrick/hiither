@@ -1,11 +1,7 @@
 (function () {
-  // Prevent the script from executing if it's running inside the iframe
   if (window !== window.top) return;
 
-  const appUrl =
-    window.location.hostname === "localhost"
-      ? "http://localhost:3000"
-      : "https://www.hiither.com";
+  const appUrl = "https://www.hiither.com";
 
   let cachedMaxZIndex;
 

@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "@/auth.config";
 import prisma from "@/lib/prisma";
 import { getAccountByUserId } from "@/db/auth/account";
+import { getOneTimeConfirmationByUserId } from "@/db/auth/one-time-confirmation";
 import { getTwoFactorConfirmationByUserId } from "@/db/auth/two-factor-confirmation";
 import { getUserById } from "@/db/auth/user";
 import { sendVerificationRequest } from "@/emails/actions/send-verification-request";
@@ -35,6 +36,35 @@ export const {
       });
     },
   },
+  cookies: {
+    sessionToken: {
+      name: "hiither.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+    csrfToken: {
+      name: "hiither.csrf-token",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+    callbackUrl: {
+      name: "hiither.callback-url",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+  },
   callbacks: {
     async signIn({ user, account }) {
       // Allow OAuth without email verification
@@ -44,6 +74,17 @@ export const {
 
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) return false;
+
+      if (user.oneTimeAuth) {
+        const oneTimeConfirmation = await getOneTimeConfirmationByUserId(
+          existingUser.id,
+        );
+
+        // Delete one-time confirmation for next sign in
+        await prisma.oneTimeConfirmation.delete({
+          where: { id: oneTimeConfirmation.id },
+        });
+      }
 
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
