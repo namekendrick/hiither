@@ -9,7 +9,6 @@ export const Panel = () => {
     currentPanel,
     onHandleCloseButtonClicked,
     panelOpened,
-    loading,
   } = usePanel();
 
   if (!panelOpened) return null;

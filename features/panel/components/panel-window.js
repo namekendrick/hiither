@@ -1,18 +1,21 @@
 "use client";
 
 import { X } from "lucide-react";
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 
-import { Separator } from "@/components/ui/separator";
-import { BlockEditor } from "@/features/editor/components/block-editor";
-import { CommentsSection } from "@/features/panel/components/comments-section";
-import { JoinForm } from "@/features/panel/components/join-form";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { useCurrentUser } from "@/features/auth/hooks";
+import { BlockEditor } from "@/features/editor/components/block-editor";
+import { CommentForm } from "@/features/panel/components/comment-form";
+import { CommentsSection } from "@/features/panel/components/comments-section";
+import { PanelJoinForm } from "@/features/panel/components/panel-join-form";
 
 export const PanelWindow = forwardRef(
   ({ currentPanel, onHandleCloseButtonClicked }, ref) => {
     const user = useCurrentUser();
+
+    const [isReplying, setIsReplying] = useState(false);
 
     return (
       <div className="flex flex-col gap-y-4">
@@ -25,9 +28,16 @@ export const PanelWindow = forwardRef(
         </Button>
         <BlockEditor panelId={currentPanel.id} readOnly />
         <Separator />
-        {!user && <JoinForm panelId={currentPanel.id} />}
         <div className="mt-5">
-          <CommentsSection panelId={currentPanel.id} embed />
+          {user ? (
+            <CommentForm
+              panelId={currentPanel.id}
+              setIsReplying={setIsReplying}
+            />
+          ) : (
+            <PanelJoinForm panelId={currentPanel.id} />
+          )}
+          <CommentsSection panelId={currentPanel.id} />
         </div>
       </div>
     );

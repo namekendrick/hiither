@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { MessageSquare, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
 
@@ -17,7 +18,6 @@ export const PanelComment = ({
   votesAmt,
   panelId,
   isMine,
-  embed,
 }) => {
   const commentRef = useRef(null);
   const [isReplying, setIsReplying] = useState(false);
@@ -34,9 +34,17 @@ export const PanelComment = ({
       <div className="flex flex-col">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-2">
-            <p className="text-sm font-bold text-gray-900">
-              {comment.author.name ?? comment.author.email.split("@")[0]}
-            </p>
+            {isMine ? (
+              <Link href="/profile/edit" target="_blank">
+                <p className="text-sm font-bold text-gray-900">
+                  {comment.author.name ?? comment.author.email.split("@")[0]}
+                </p>
+              </Link>
+            ) : (
+              <p className="text-sm font-bold text-gray-900">
+                {comment.author.name ?? comment.author.email.split("@")[0]}
+              </p>
+            )}
             <p className="max-h-40 truncate text-xs text-zinc-500">
               {formatTimeToNow(new Date(comment.createdAt))}
             </p>
@@ -59,32 +67,15 @@ export const PanelComment = ({
             votesAmt={votesAmt}
             currentVote={currentVote}
             panelId={panelId}
-            embed={embed}
           />
-          {embed ? (
-            <Button
-              onClick={() =>
-                window.open(
-                  `${process.env.NEXT_PUBLIC_APP_URL}/p/${panelId}`,
-                  "_blank",
-                )
-              }
-              variant="ghost"
-              size="sm"
-            >
-              <MessageSquare className="mr-1.5 h-4 w-4" />
-              Reply
-            </Button>
-          ) : (
-            <Button
-              onClick={() => handleAuthAction(setIsReplying(true))}
-              variant="ghost"
-              size="sm"
-            >
-              <MessageSquare className="mr-1.5 h-4 w-4" />
-              Reply
-            </Button>
-          )}
+          <Button
+            onClick={() => handleAuthAction(setIsReplying(true))}
+            variant="ghost"
+            size="sm"
+          >
+            <MessageSquare className="mr-1.5 h-4 w-4" />
+            Reply
+          </Button>
         </div>
       </div>
 

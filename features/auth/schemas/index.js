@@ -31,6 +31,7 @@ export const AccountSettingsSchema = z
 
 export const JoinSchema = z.object({
   email: z.string().email({ message: "Email is required" }),
+  code: z.optional(z.string()),
 });
 
 export const LoginSchema = z.object({

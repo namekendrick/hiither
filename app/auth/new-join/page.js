@@ -1,8 +1,8 @@
-import { NewJoinForm } from "@/features/auth/components/new-join-form";
+// import { NewJoinForm } from "@/features/auth/components/new-join-form";
 
-const NewJoinPage = () => {
-  // TODO: Revisit Suspense boundary warning
-  return <NewJoinForm />;
-};
+// const NewJoinPage = () => {
+//   // TODO: Revisit Suspense boundary warning
+//   return <NewJoinForm />;
+// };
 
-export default NewJoinPage;
+// export default NewJoinPage;

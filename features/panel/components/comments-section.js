@@ -4,7 +4,7 @@ import { useCurrentUser } from "@/features/auth/hooks";
 import { PanelComment } from "@/features/panel/components/panel-comment";
 import { useGetComments } from "@/features/panel/hooks/use-get-comments";
 
-export const CommentsSection = ({ panelId, embed }) => {
+export const CommentsSection = ({ panelId }) => {
   const user = useCurrentUser();
   const { data, isLoading } = useGetComments(panelId);
 
@@ -40,7 +40,6 @@ export const CommentsSection = ({ panelId, embed }) => {
                   votesAmt={topLevelCommentVotesAmt}
                   panelId={panelId}
                   isMine={topLevelComment.authorId === user?.id}
-                  embed={embed}
                 />
               </div>
 
@@ -68,7 +67,6 @@ export const CommentsSection = ({ panelId, embed }) => {
                         votesAmt={replyVotesAmt}
                         panelId={panelId}
                         isMine={reply.authorId === user?.id}
-                        embed={embed}
                       />
                     </div>
                   );

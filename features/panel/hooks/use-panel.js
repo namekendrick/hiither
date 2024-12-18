@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import { getPublicDomainByPanelId } from "@/db/domain";
 import { getCurrentPanel } from "@/db/panel";
 import { postToParent } from "@/lib/utils";
 import { useAddView } from "@/features/panel/hooks/use-add-view";
@@ -9,36 +10,22 @@ export const usePanel = () => {
   const panelWindowRef = useRef(null);
 
   const [currentPanel, setCurrentPanel] = useState();
+  const [currentDomain, setCurrentDomain] = useState();
   const [panelOpened, setPanelOpened] = useState(false);
   const [closeButtonClicked, setCloseButtonClicked] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    postToParent(
-      JSON.stringify({
-        width: panelOpened ? "100%" : 0,
-        height: panelOpened ? "100%" : 0,
-        closeButtonClicked,
-      }),
-    );
-  }, [panelOpened, closeButtonClicked]);
-
-  const onHandleCloseButtonClicked = () =>
-    setCloseButtonClicked((prev) => !prev);
-
-  const onGetPanel = async (values) => {
-    setLoading(true);
-
-    const panel = await getCurrentPanel(values.panelId);
-
-    if (panel.isPublished) {
-      setCurrentPanel(panel);
-      setPanelOpened(true);
-      mutation.mutate(values.panelId);
+    if (currentDomain) {
+      postToParent(
+        JSON.stringify({
+          width: panelOpened ? "100%" : 0,
+          height: panelOpened ? "100%" : 0,
+          closeButtonClicked,
+        }),
+        `https://www.${currentDomain.name}`,
+      );
     }
-
-    setLoading(false);
-  };
+  }, [panelOpened, closeButtonClicked, currentDomain]);
 
   useEffect(() => {
     window.addEventListener("message", (e) => {
@@ -47,11 +34,25 @@ export const usePanel = () => {
     });
   }, [closeButtonClicked]);
 
+  const onHandleCloseButtonClicked = () =>
+    setCloseButtonClicked((prev) => !prev);
+
+  const onGetPanel = async (values) => {
+    const panel = await getCurrentPanel(values.panelId);
+    const domain = await getPublicDomainByPanelId(values.panelId);
+
+    if (panel.isPublished) {
+      setCurrentPanel(panel);
+      setCurrentDomain(domain);
+      setPanelOpened(true);
+      mutation.mutate(values.panelId);
+    }
+  };
+
   return {
     panelWindowRef,
     currentPanel,
     onHandleCloseButtonClicked,
     panelOpened,
-    loading,
   };
 };
