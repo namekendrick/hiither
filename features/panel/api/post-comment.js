@@ -1,7 +1,7 @@
 "use server";
 
-import { currentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { currentUser } from "@/lib/auth";
 
 export const postComment = async (values) => {
   try {
