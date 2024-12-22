@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 import { Montserrat } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 
@@ -34,6 +35,7 @@ export default async function RootLayout({ children }) {
           <QueryProvider>
             <ModalProvider />
             {children}
+            <Analytics />
           </QueryProvider>
         </body>
       </html>
