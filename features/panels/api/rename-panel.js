@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { namePanelSchema } from "@/features/panels/schemas";
 import { currentUser } from "@/lib/auth";
 
 export const renamePanel = async (values) => {
@@ -8,7 +9,11 @@ export const renamePanel = async (values) => {
     const user = await currentUser();
     if (!user) return { status: 401, message: "Unauthorized!" };
 
-    const { id, title } = values;
+    const validatedFields = namePanelSchema.safeParse(values);
+
+    if (!validatedFields.success) return { error: "Invalid fields!" };
+
+    const { id, title } = validatedFields.data;
 
     const data = await prisma.panel.findUnique({
       where: { id },

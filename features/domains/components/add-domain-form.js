@@ -10,16 +10,13 @@ import {
   FormField,
   FormControl,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useCurrentUser } from "@/features/auth/hooks";
 import { useAddDomain } from "@/features/domains/hooks/use-add-domain";
 import { addDomainSchema } from "@/features/domains/schemas";
 
 export const AddDomainForm = ({ setOpen }) => {
-  const user = useCurrentUser();
   const mutation = useAddDomain();
   const [isPending, startTransition] = useTransition();
 

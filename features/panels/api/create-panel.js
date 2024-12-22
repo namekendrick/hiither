@@ -1,14 +1,19 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { createPanelSchema } from "@/features/panels/schemas";
 import { currentUser } from "@/lib/auth";
 
 export const createPanel = async (values) => {
   try {
-    const { domainId, title } = values;
-
     const user = await currentUser();
     if (!user) return { status: 401, message: "Unauthorized!" };
+
+    const validatedFields = createPanelSchema.safeParse(values);
+
+    if (!validatedFields.success) return { error: "Invalid fields!" };
+
+    const { domainId, title } = validatedFields.data;
 
     const permission = await prisma.permission.findFirst({
       where: {

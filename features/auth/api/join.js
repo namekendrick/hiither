@@ -10,9 +10,7 @@ export const join = async (values) => {
   const user = await currentUser();
   const validatedFields = JoinSchema.safeParse(values);
 
-  if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
-  }
+  if (!validatedFields.success) return { error: "Invalid fields!" };
 
   const { email } = validatedFields.data;
 

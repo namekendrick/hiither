@@ -1,12 +1,19 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { addDomainSchema } from "@/features/domains/schemas";
 import { currentUser } from "@/lib/auth";
 
-export const addDomain = async ({ name }) => {
+export const addDomain = async (values) => {
   try {
     const user = await currentUser();
     if (!user) return { status: 401, message: "Unauthorized!" };
+
+    const validatedFields = addDomainSchema.safeParse(values);
+
+    if (!validatedFields.success) return { error: "Invalid fields!" };
+
+    const { name } = validatedFields.data;
 
     const domain = await prisma.domain.create({
       data: {

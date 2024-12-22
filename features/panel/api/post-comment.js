@@ -1,16 +1,20 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { CommentSchema } from "@/features/panel/schemas";
 import { currentUser } from "@/lib/auth";
 import { ratelimit } from "@/lib/redis";
 
 export const postComment = async (values) => {
   try {
-    const { text, panelId, replyToId } = values;
-
     const user = await currentUser();
-
     if (!user) return { status: 401, message: "Unauthorized!" };
+
+    const validatedFields = CommentSchema.safeParse(values);
+
+    if (!validatedFields.success) return { error: "Invalid fields!" };
+
+    const { text, panelId, replyToId } = validatedFields.data;
 
     const { success } = await ratelimit.limit(user.id);
 
