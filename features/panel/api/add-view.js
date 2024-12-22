@@ -20,7 +20,6 @@ export const addView = async (panelId) => {
     const { success } = await ratelimit.limit(ip);
 
     if (!success) {
-      console.log("[PANEL_ERROR],", "Too many requests!");
       return { status: 429, message: "Too many requests!" };
     }
 

@@ -10,11 +10,13 @@ export const postComment = async (values) => {
     const user = await currentUser();
     if (!user) return { status: 401, message: "Unauthorized!" };
 
+    const { panelId, replyToId } = values;
+
     const validatedFields = CommentSchema.safeParse(values);
 
     if (!validatedFields.success) return { error: "Invalid fields!" };
 
-    const { text, panelId, replyToId } = validatedFields.data;
+    const { text } = validatedFields.data;
 
     const { success } = await ratelimit.limit(user.id);
 
