@@ -1,7 +1,8 @@
 "use server";
 
-import { currentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { currentUser } from "@/lib/auth";
+import { ratelimit } from "@/lib/redis";
 
 export const commentVote = async (values) => {
   try {
@@ -9,6 +10,10 @@ export const commentVote = async (values) => {
 
     const user = await currentUser();
     if (!user) return { status: 401, message: "Unauthorized!" };
+
+    const { success } = await ratelimit.limit(user.id);
+
+    if (!success) return { status: 429, message: "Too many requests!" };
 
     const existingVote = await prisma.commentVote.findFirst({
       where: {

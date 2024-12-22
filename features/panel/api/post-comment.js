@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { currentUser } from "@/lib/auth";
+import { ratelimit } from "@/lib/redis";
 
 export const postComment = async (values) => {
   try {
@@ -10,6 +11,10 @@ export const postComment = async (values) => {
     const user = await currentUser();
 
     if (!user) return { status: 401, message: "Unauthorized!" };
+
+    const { success } = await ratelimit.limit(user.id);
+
+    if (!success) return { status: 429, message: "Too many requests!" };
 
     await prisma.comment.create({
       data: {

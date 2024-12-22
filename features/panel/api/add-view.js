@@ -1,7 +1,10 @@
 "use server";
 
-import { currentUser } from "@/lib/auth";
+import { headers } from "next/headers";
+
 import prisma from "@/lib/prisma";
+import { currentUser } from "@/lib/auth";
+import { ratelimit } from "@/lib/redis";
 
 export const addView = async (panelId) => {
   try {
@@ -12,6 +15,14 @@ export const addView = async (panelId) => {
     });
 
     if (!panel) return { status: 404, message: "No panel found!" };
+
+    const ip = headers().get("x-forwarded-for") ?? "127.0.0.1";
+    const { success } = await ratelimit.limit(ip);
+
+    if (!success) {
+      console.log("[PANEL_ERROR],", "Too many requests!");
+      return { status: 429, message: "Too many requests!" };
+    }
 
     if (panel.isPublished) {
       if (user) {
