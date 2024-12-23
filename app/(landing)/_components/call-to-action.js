@@ -7,9 +7,9 @@ export const CallToAction = () => {
   return (
     <div className="flex flex-col items-start gap-y-5 md:items-center md:gap-y-5">
       <h1 className="text-left text-[35px] font-semibold leading-tight md:text-center md:text-[55px] lg:text-[70px] xl:text-[80px]">
-        Convert your traffic
+        The next gen of
         <br />
-        without being <span className="text-indigo-500">annoying</span>.
+        <span className="text-indigo-500">audience engagement</span>.
       </h1>
       <p className="text-left text-base text-muted-foreground md:text-center">
         Hiither turns your visitors into engaged subscribers by{" "}
