@@ -1,7 +1,7 @@
 (function () {
   if (window !== window.top) return;
 
-  const appUrl = "https://www.hiither.com";
+  const appUrl = "http://localhost:3000";
 
   let cachedMaxZIndex;
 
