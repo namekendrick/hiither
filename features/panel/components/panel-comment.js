@@ -18,6 +18,7 @@ export const PanelComment = ({
   votesAmt,
   panelId,
   isMine,
+  access,
 }) => {
   const commentRef = useRef(null);
   const [isReplying, setIsReplying] = useState(false);
@@ -61,22 +62,24 @@ export const PanelComment = ({
           )}
         </div>
         <p className="mt-2 text-sm">{comment.text}</p>
-        <div className="mt-2 flex items-center gap-2">
-          <CommentVotes
-            commentId={comment.id}
-            votesAmt={votesAmt}
-            currentVote={currentVote}
-            panelId={panelId}
-          />
-          <Button
-            onClick={() => handleAuthAction(setIsReplying(true))}
-            variant="ghost"
-            size="sm"
-          >
-            <MessageSquare className="mr-1.5 h-4 w-4" />
-            Reply
-          </Button>
-        </div>
+        {access && access !== "BANNED" && (
+          <div className="mt-2 flex items-center gap-2">
+            <CommentVotes
+              commentId={comment.id}
+              votesAmt={votesAmt}
+              currentVote={currentVote}
+              panelId={panelId}
+            />
+            <Button
+              onClick={() => handleAuthAction(setIsReplying(true))}
+              variant="ghost"
+              size="sm"
+            >
+              <MessageSquare className="mr-1.5 h-4 w-4" />
+              Reply
+            </Button>
+          </div>
+        )}
       </div>
 
       {isReplying && (

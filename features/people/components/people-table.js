@@ -29,7 +29,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export const PanelTable = ({ columns, data, pagination, setPagination }) => {
+export const PeopleTable = ({ columns, data, pagination, setPagination }) => {
   const [sorting, setSorting] = useState([]);
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
@@ -62,9 +62,9 @@ export const PanelTable = ({ columns, data, pagination, setPagination }) => {
       <div className="flex items-center py-[5px]">
         <Input
           placeholder="Search this page..."
-          value={table.getColumn("title")?.getFilterValue() ?? ""}
+          value={table.getColumn("name")?.getFilterValue() ?? ""}
           onChange={(event) =>
-            table.getColumn("title")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

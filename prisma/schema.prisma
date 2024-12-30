@@ -21,6 +21,7 @@ model User {
   updatedAt             DateTime               @updatedAt
   accounts              Account[]
   comments              Comment[]
+  reports               CommentReport[]
   commentVotes          CommentVote[]
   domains               Domain[]
   joins                 Join[]
@@ -47,16 +48,16 @@ model Domain {
 }
 
 model Join {
-  id        String        @id @default(cuid())
+  id        String          @id @default(cuid())
   userId    String
   domainId  String
   panelId   String?
-  access    CommunityRole @default(CONTRIBUTOR)
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  domain    Domain        @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  source    Panel?        @relation(fields: [panelId], references: [id], onDelete: Cascade)
-  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  access    CommunityAccess @default(CONTRIBUTOR)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  domain    Domain          @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  source    Panel?          @relation(fields: [panelId], references: [id], onDelete: Cascade)
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, domainId])
   @@index([userId])
@@ -113,18 +114,31 @@ model Image {
 }
 
 model Comment {
-  id        String        @id @default(cuid())
+  id        String          @id @default(cuid())
   text      String
   authorId  String
   panelId   String
   replyToId String?
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  author    User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  panel     Panel         @relation(fields: [panelId], references: [id], onDelete: Cascade)
-  replyTo   Comment?      @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  replies   Comment[]     @relation("ReplyTo")
+  status    CommentStatus   @default(PUBLISHED)
+  metadata  Json?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  panel     Panel           @relation(fields: [panelId], references: [id], onDelete: Cascade)
+  replyTo   Comment?        @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  replies   Comment[]       @relation("ReplyTo")
+  reports   CommentReport[]
   votes     CommentVote[]
+}
+
+model CommentReport {
+  id        String   @id @default(cuid())
+  commentId String
+  userId    String
+  reason    String   @default("Other")
+  createdAt DateTime @default(now())
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model CommentVote {
@@ -274,8 +288,11 @@ enum DomainRole {
   USER
 }
 
-enum CommunityRole {
+enum CommunityAccess {
   CONTRIBUTOR
+  BANNED
+  SHADOWED
+  TRUSTED
   MODERATOR
 }
 
@@ -283,6 +300,13 @@ enum PanelAccess {
   EDIT
   VIEW
   PRIVATE
+}
+
+enum CommentStatus {
+  PUBLISHED
+  PENDING
+  DELETED
+  SPAM
 }
 
 enum VoteType {

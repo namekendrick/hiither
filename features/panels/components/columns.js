@@ -117,8 +117,8 @@ export const panelColumns = ({
     },
     {
       accessorKey: "joins",
-      label: "Contacts",
-      header: "Contacts",
+      label: "New People",
+      header: "New People",
       cell: ({ row }) => row.original._count.joins,
     },
     {

@@ -1,9 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useSession } from "next-auth/react";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 
 import { FormError } from "@/components/form-error";
@@ -26,7 +27,8 @@ import { newJoin } from "@/features/auth/api/new-join";
 import { panelJoin } from "@/features/auth/api/panel-join";
 import { JoinSchema } from "@/features/auth/schemas";
 
-export const PanelJoinForm = ({ panelId }) => {
+export const PanelJoinForm = ({ panelId, user }) => {
+  const queryClient = useQueryClient();
   const { update } = useSession();
 
   const [showOneTime, setShowOneTime] = useState(false);
@@ -38,8 +40,12 @@ export const PanelJoinForm = ({ panelId }) => {
 
   const form = useForm({
     resolver: zodResolver(JoinSchema),
-    defaultValues: { email: "" },
+    defaultValues: user?.email ?? "",
   });
+
+  useEffect(() => {
+    if (user) form.setValue("email", user.email);
+  }, [user]);
 
   const onSubmit = (values) => {
     setError("");
@@ -48,22 +54,32 @@ export const PanelJoinForm = ({ panelId }) => {
     values.panelId = panelId;
 
     startTransition(() => {
-      panelJoin(values)
-        .then((data) => {
-          setError(data?.error);
+      if (user) {
+        newJoin(panelId)
+          .then(() => queryClient.invalidateQueries({ queryKey: ["access"] }))
+          .catch(() => setError("Something went wrong!"));
+      } else {
+        panelJoin(values)
+          .then((data) => {
+            setError(data?.error);
 
-          if (data?.oneTime) {
-            setSuccess("A one-time code was sent to your inbox!");
-            setShowOneTime(true);
-          }
+            if (data?.oneTime) {
+              setSuccess("A one-time code was sent to your inbox!");
+              setShowOneTime(true);
+            }
 
-          if (data?.success) {
-            update().then(() => {
-              newJoin(panelId);
-            });
-          }
-        })
-        .catch(() => setError("Something went wrong!"));
+            if (data?.success) {
+              newJoin(panelId)
+                .then(() => {
+                  update().then(() => {
+                    queryClient.invalidateQueries({ queryKey: ["access"] });
+                  });
+                })
+                .catch(() => setError("Something went wrong!"));
+            }
+          })
+          .catch(() => setError("Something went wrong!"));
+      }
     });
   };
 
@@ -115,7 +131,7 @@ export const PanelJoinForm = ({ panelId }) => {
                 <FormControl>
                   <Input
                     className="h-12 rounded-md bg-stone-50"
-                    disabled={isPending}
+                    disabled={isPending || success || user?.email}
                     placeholder="michael.scott@dundermifflin.com"
                     type="email"
                     {...field}

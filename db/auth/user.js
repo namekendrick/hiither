@@ -27,19 +27,3 @@ export const getUserById = async (id) => {
     return null;
   }
 };
-
-// TODO: Commenting moved to platform; use other getUser and delete
-export const getUserByJoinId = async (id) => {
-  try {
-    const data = await prisma.join.findFirst({
-      where: { id },
-      select: {
-        user: true,
-      },
-    });
-
-    return data.user;
-  } catch {
-    return null;
-  }
-};

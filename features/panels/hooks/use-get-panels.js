@@ -6,11 +6,11 @@ import {
   getPublicPanelsByDomainId,
 } from "@/db/panel";
 
-export const useGetPanels = (id) => {
+export const useGetPanels = (id, page) => {
   const { data, isLoading } = useQuery({
     queryKey: ["panels"],
     queryFn: async () => {
-      return await getPanelsByDomainId(id);
+      return await getPanelsByDomainId({ id, page });
     },
   });
 

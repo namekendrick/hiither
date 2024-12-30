@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import { ToastAction } from "@/components/ui/toast";
+import { PANELS_PER_PAGE } from "@/constants/pagination";
 import { useDomainId } from "@/features/domains/hooks/use-domain-id";
 import { panelColumns } from "@/features/panels/components/columns";
 import { PanelTable } from "@/features/panels/components/panel-table";
@@ -17,11 +18,15 @@ const PanelsPage = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
-  const { data, isLoading } = useGetPanels(domainId);
-
   const openDeleteModal = useDeletePanelModal((state) => state.onOpen);
   const openUnpublishModal = useUnpublishPanelModal((state) => state.onOpen);
   const [renamingPanel, setRenamingPanel] = useState();
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pagesize: PANELS_PER_PAGE,
+  });
+
+  const { data, isLoading } = useGetPanels(domainId, pagination.pageIndex + 1);
 
   const columns = panelColumns({
     openUnpublishModal,
@@ -32,19 +37,22 @@ const PanelsPage = () => {
     toast,
   });
 
-  //TODO: Handle quick flash of previous panel query
-
   useEffect(() => {
     if (!isLoading) {
       queryClient.invalidateQueries({ queryKey: ["panels"] });
     }
-  }, [isLoading]);
+  }, [isLoading, pagination]);
 
   if (isLoading) return null;
 
   return (
     <div className="mt-[25px] flex flex-col gap-4 pb-5">
-      <PanelTable columns={columns} data={data} />
+      <PanelTable
+        columns={columns}
+        data={data}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
     </div>
   );
 };

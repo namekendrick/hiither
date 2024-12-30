@@ -10,10 +10,13 @@ import { BlockEditor } from "@/features/editor/components/block-editor";
 import { CommentForm } from "@/features/panel/components/comment-form";
 import { CommentsSection } from "@/features/panel/components/comments-section";
 import { PanelJoinForm } from "@/features/panel/components/panel-join-form";
+import { useGetCommunityAccess } from "@/features/panel/hooks/use-get-access";
 
 export const PanelWindow = forwardRef(
   ({ currentPanel, onHandleCloseButtonClicked }, ref) => {
     const user = useCurrentUser();
+
+    const { data: access, isLoading } = useGetCommunityAccess(currentPanel.id);
 
     const [isReplying, setIsReplying] = useState(false);
 
@@ -29,15 +32,17 @@ export const PanelWindow = forwardRef(
         <BlockEditor panelId={currentPanel.id} readOnly />
         <Separator />
         <div className="mt-5">
-          {user ? (
-            <CommentForm
-              panelId={currentPanel.id}
-              setIsReplying={setIsReplying}
-            />
-          ) : (
-            <PanelJoinForm panelId={currentPanel.id} />
-          )}
-          <CommentsSection panelId={currentPanel.id} />
+          {!isLoading && access !== "BANNED" ? (
+            access ? (
+              <CommentForm
+                panelId={currentPanel.id}
+                setIsReplying={setIsReplying}
+              />
+            ) : (
+              <PanelJoinForm panelId={currentPanel.id} user={user} />
+            )
+          ) : null}
+          <CommentsSection panelId={currentPanel.id} access={access} />
         </div>
       </div>
     );

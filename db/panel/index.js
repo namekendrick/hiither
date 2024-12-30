@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { PANELS_PER_PAGE } from "@/constants/pagination";
 import { currentUser } from "@/lib/auth";
 
 export const getCurrentPanel = async (id) => {
@@ -21,10 +22,12 @@ export const getCurrentPanel = async (id) => {
   }
 };
 
-export const getPanelsByDomainId = async (id) => {
+export const getPanelsByDomainId = async ({ id, page }) => {
   try {
     const user = await currentUser();
     if (!user) return { status: 401, message: "Unauthorized!" };
+
+    if (!id) return { status: 401, message: "Domain ID required!" };
 
     const permission = await prisma.permission.findFirst({
       where: {
@@ -36,6 +39,18 @@ export const getPanelsByDomainId = async (id) => {
     if (!permission) return { status: 401, message: "Unauthorized!" };
 
     const panels = await prisma.panel.findMany({
+      where: {
+        permission: {
+          is: {
+            domainId: id,
+          },
+        },
+      },
+    });
+
+    const paginated = await prisma.panel.findMany({
+      take: PANELS_PER_PAGE,
+      skip: (page - 1) * PANELS_PER_PAGE,
       where: {
         permission: {
           is: {
@@ -64,7 +79,9 @@ export const getPanelsByDomainId = async (id) => {
       },
     });
 
-    if (panels) return panels;
+    let totalPages = Math.ceil(parseInt(panels.length) / PANELS_PER_PAGE);
+
+    return { paginated, totalPages };
   } catch (error) {
     console.log("[PANEL_ERROR],", error);
     return { status: 500, message: "Internal Error" };

@@ -22,7 +22,9 @@ export const usePanel = () => {
           height: panelOpened ? "100%" : 0,
           closeButtonClicked,
         }),
-        `https://www.${currentDomain.name}`,
+        process.env.NODE_ENV !== "development"
+          ? `https://www.${currentDomain.name}`
+          : `http://${currentDomain.name}`,
       );
     }
   }, [panelOpened, closeButtonClicked, currentDomain]);
