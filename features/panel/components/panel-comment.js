@@ -32,17 +32,17 @@ export const PanelComment = ({
 
   return (
     <div ref={commentRef} className="group/comment flex flex-col gap-y-4">
-      <div className="flex flex-col">
+      <div className="flex flex-col overflow-hidden">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-x-2">
             {isMine ? (
               <Link href="/profile/edit" target="_blank">
-                <p className="text-sm font-bold text-gray-900">
+                <p className="w-[250px] overflow-hidden truncate text-sm font-bold text-gray-900">
                   {comment.author.name ?? comment.author.email.split("@")[0]}
                 </p>
               </Link>
             ) : (
-              <p className="text-sm font-bold text-gray-900">
+              <p className="w-[250px] overflow-hidden truncate text-sm font-bold text-gray-900">
                 {comment.author.name ?? comment.author.email.split("@")[0]}
               </p>
             )}
@@ -61,7 +61,9 @@ export const PanelComment = ({
             </Button>
           )}
         </div>
-        <p className="mt-2 text-sm">{comment.text}</p>
+        <p className="mt-2 overflow-hidden text-ellipsis text-sm">
+          {comment.text}
+        </p>
         {access && access !== "BANNED" && (
           <div className="mt-2 flex items-center gap-2">
             <CommentVotes

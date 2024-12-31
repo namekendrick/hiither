@@ -75,9 +75,11 @@ export const panelColumns = ({
           ) : (
             <Link
               href={`/panel/${row.original.id}/edit`}
-              className="px-4 hover:underline"
+              className="hover:underline"
             >
-              {row.getValue("title")}
+              <p className="max-w-[600px] truncate px-4">
+                {row.getValue("title")}
+              </p>
             </Link>
           )}
         </>

@@ -49,8 +49,10 @@ export const personColumns = ({ openChangeAccessModal }) => {
       },
       cell: ({ row }) => {
         return (
-          <div className="flex flex-col gap-1 px-4">
-            <div className="font-semibold">{row.original.user.name}</div>
+          <div className="flex max-w-[800px] flex-col gap-1 px-4">
+            <div className="overflow-hidden text-ellipsis font-semibold">
+              {row.original.user.name}
+            </div>
             <div className="text-muted-foreground">
               {row.original.user.email}
             </div>

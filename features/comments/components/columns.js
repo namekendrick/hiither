@@ -38,14 +38,18 @@ export const commentColumns = ({ openChangeStatusModal }) => {
         const pending = row.original.status === "PENDING";
 
         return (
-          <div className="flex max-w-[600px] flex-col gap-4 px-4 py-2">
+          <div className="flex max-w-[800px] flex-col gap-4 px-4 py-2">
             <div>
-              <div className="font-semibold">{row.original.author.name}</div>
+              <div className="overflow-hidden text-ellipsis font-semibold">
+                {row.original.author.name}
+              </div>
               <div className="text-muted-foreground">
                 {row.original.author.email}
               </div>
             </div>
-            <div className="">{row.original.text}</div>
+            <div className="overflow-hidden text-ellipsis">
+              {row.original.text}
+            </div>
             <div className="flex gap-x-2">
               {pending ? (
                 <Button

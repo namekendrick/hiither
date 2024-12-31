@@ -13,7 +13,8 @@ export const renamePanel = async (values) => {
 
     if (!validatedFields.success) return { error: "Invalid fields!" };
 
-    const { id, title } = validatedFields.data;
+    const { title } = validatedFields.data;
+    const { id } = values;
 
     const data = await prisma.panel.findUnique({
       where: { id },

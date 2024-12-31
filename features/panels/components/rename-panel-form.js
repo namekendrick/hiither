@@ -36,6 +36,8 @@ export const RenamePanelForm = ({ id, original, setRenamingPanel }) => {
   });
 
   const onSubmit = (values) => {
+    console.log(values);
+
     startTransition(() => {
       mutation.mutate(values, {
         onSuccess: () => setRenamingPanel(false),
