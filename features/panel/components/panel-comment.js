@@ -37,12 +37,12 @@ export const PanelComment = ({
           <div className="flex items-center gap-x-2">
             {isMine ? (
               <Link href="/profile/edit" target="_blank">
-                <p className="w-[250px] overflow-hidden truncate text-sm font-bold text-gray-900">
+                <p className="max-w-[250px] overflow-hidden truncate text-sm font-bold text-gray-900">
                   {comment.author.name ?? comment.author.email.split("@")[0]}
                 </p>
               </Link>
             ) : (
-              <p className="w-[250px] overflow-hidden truncate text-sm font-bold text-gray-900">
+              <p className="max-w-[250px] overflow-hidden truncate text-sm font-bold text-gray-900">
                 {comment.author.name ?? comment.author.email.split("@")[0]}
               </p>
             )}
