@@ -20,7 +20,8 @@ const { auth } = NextAuth({
         sameSite: "none",
         path: "/",
         secure: true,
-        domain: ".hiither.com",
+        domain:
+          process.env.NODE_ENV === "production" ? ".hiither.com" : "localhost",
       },
     },
     csrfToken: {
@@ -30,7 +31,8 @@ const { auth } = NextAuth({
         sameSite: "none",
         path: "/",
         secure: true,
-        domain: ".hiither.com",
+        domain:
+          process.env.NODE_ENV === "production" ? ".hiither.com" : "localhost",
       },
     },
     callbackUrl: {
@@ -40,7 +42,8 @@ const { auth } = NextAuth({
         sameSite: "none",
         path: "/",
         secure: true,
-        domain: ".hiither.com",
+        domain:
+          process.env.NODE_ENV === "production" ? ".hiither.com" : "localhost",
       },
     },
   },

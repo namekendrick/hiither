@@ -19,6 +19,7 @@ export const Panel = () => {
         ref={panelWindowRef}
         currentPanel={currentPanel}
         onHandleCloseButtonClicked={onHandleCloseButtonClicked}
+        key={currentPanel.id}
       />
     </div>
   );

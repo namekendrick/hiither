@@ -44,7 +44,8 @@ export const {
         sameSite: "none",
         path: "/",
         secure: true,
-        domain: ".hiither.com",
+        domain:
+          process.env.NODE_ENV === "production" ? ".hiither.com" : "localhost",
       },
     },
     csrfToken: {
@@ -54,7 +55,8 @@ export const {
         sameSite: "none",
         path: "/",
         secure: true,
-        domain: ".hiither.com",
+        domain:
+          process.env.NODE_ENV === "production" ? ".hiither.com" : "localhost",
       },
     },
     callbackUrl: {
@@ -64,7 +66,8 @@ export const {
         sameSite: "none",
         path: "/",
         secure: true,
-        domain: ".hiither.com",
+        domain:
+          process.env.NODE_ENV === "production" ? ".hiither.com" : "localhost",
       },
     },
   },

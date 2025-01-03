@@ -30,10 +30,13 @@ export const usePanel = () => {
   }, [panelOpened, closeButtonClicked, currentDomain]);
 
   useEffect(() => {
-    window.addEventListener("message", (e) => {
+    const handleMessage = async (e) => {
       if (e.data.panelId) onGetPanel(e.data);
       if (e.data.buttonClicked) setCloseButtonClicked(false);
-    });
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, [closeButtonClicked]);
 
   const onHandleCloseButtonClicked = () =>
