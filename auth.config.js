@@ -1,7 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 
 import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 
 import { getOneTimeConfirmationByUserId } from "@/db/auth/one-time-confirmation";
@@ -42,10 +41,6 @@ export default {
 
         return null;
       },
-    }),
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
 };
