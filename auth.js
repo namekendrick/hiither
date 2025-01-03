@@ -44,6 +44,7 @@ export const {
         sameSite: "none",
         path: "/",
         secure: true,
+        domain: ".hiither.com",
       },
     },
     csrfToken: {
@@ -53,6 +54,7 @@ export const {
         sameSite: "none",
         path: "/",
         secure: true,
+        domain: ".hiither.com",
       },
     },
     callbackUrl: {
@@ -62,6 +64,7 @@ export const {
         sameSite: "none",
         path: "/",
         secure: true,
+        domain: ".hiither.com",
       },
     },
   },

@@ -20,6 +20,7 @@ const { auth } = NextAuth({
         sameSite: "none",
         path: "/",
         secure: true,
+        domain: ".hiither.com",
       },
     },
     csrfToken: {
@@ -29,6 +30,7 @@ const { auth } = NextAuth({
         sameSite: "none",
         path: "/",
         secure: true,
+        domain: ".hiither.com",
       },
     },
     callbackUrl: {
@@ -38,6 +40,7 @@ const { auth } = NextAuth({
         sameSite: "none",
         path: "/",
         secure: true,
+        domain: ".hiither.com",
       },
     },
   },
@@ -49,10 +52,7 @@ export default auth(async (req) => {
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const isPublicRoute =
-    publicRoutes.includes(nextUrl.pathname) ||
-    nextUrl.pathname.startsWith("/c/") ||
-    nextUrl.pathname.startsWith("/p/");
+  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
     return null;
