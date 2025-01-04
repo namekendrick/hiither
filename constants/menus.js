@@ -29,20 +29,3 @@ export const SIDE_BAR_MENU = [
     path: "admin",
   },
 ];
-
-export const LANDING_PAGE_MENU = [
-  {
-    id: 0,
-    label: "Home",
-    icon: <Home />,
-    path: "/",
-    section: true,
-  },
-  {
-    id: 1,
-    label: "Pricing",
-    icon: <CreditCard />,
-    path: "#pricing",
-    section: true,
-  },
-];
