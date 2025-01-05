@@ -5,7 +5,7 @@ import { getCommentsByPanelId } from "@/db/comment";
 export const useGetComments = (id) => {
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["comments"],
+      queryKey: ["comments", id],
       queryFn: async ({ pageParam = "" }) => {
         return await getCommentsByPanelId({ id, pageParam });
       },
