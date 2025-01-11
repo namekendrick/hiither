@@ -5,14 +5,10 @@ import { Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
-const CodeSnippet = () => {
+export const CodeSnippet = () => {
   const { toast } = useToast();
 
-  let snippet = `
-    <!-- Start of Hiither Embed Code -->
-    <script src="${process.env.NEXT_PUBLIC_APP_URL}/embed.js"></script>
-    <!-- End of Hiither Embed Code -->
-  `;
+  let snippet = `<!-- Start of Hiither Embed Code -->\n<script async src="${process.env.NEXT_PUBLIC_APP_URL}/embed.js"></script>\n<!-- End of Hiither Embed Code -->`;
 
   return (
     <div className="relative w-full rounded-lg bg-stone-100">
@@ -28,7 +24,7 @@ const CodeSnippet = () => {
       >
         <Copy className="h-5 w-5 text-white" />
       </Button>
-      <div className="overflow-auto">
+      <div className="overflow-auto p-5">
         <pre>
           <code className="text-sm text-gray-500">{snippet}</code>
         </pre>
@@ -36,5 +32,3 @@ const CodeSnippet = () => {
     </div>
   );
 };
-
-export default CodeSnippet;
