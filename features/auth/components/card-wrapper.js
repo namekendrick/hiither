@@ -21,9 +21,11 @@ export const CardWrapper = ({
         <Header label={headerLabel} />
       </CardHeader>
       <CardContent>{children}</CardContent>
-      <CardFooter>
-        <BackButton href={backButtonHref} label={backButtonLabel} />
-      </CardFooter>
+      {backButtonHref && backButtonLabel && (
+        <CardFooter>
+          <BackButton href={backButtonHref} label={backButtonLabel} />
+        </CardFooter>
+      )}
     </Card>
   );
 };

@@ -25,10 +25,6 @@ import { CardWrapper } from "@/features/auth/components/card-wrapper";
 export const LoginForm = () => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Please sign in with the original method used"
-      : "";
 
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState("");
@@ -101,12 +97,11 @@ export const LoginForm = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           disabled={isPending}
-                          placeholder="leslie.knope@example.com"
+                          placeholder="Email"
                           type="email"
                         />
                       </FormControl>
@@ -119,18 +114,34 @@ export const LoginForm = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
                           disabled={isPending}
-                          placeholder="******"
+                          placeholder="Password"
                           type="password"
                         />
                       </FormControl>
-                      <Button size="sm" variant="link" className="px-0" asChild>
-                        <Link href="/auth/reset">Forgot password?</Link>
-                      </Button>
+                      <div className="flex items-center gap-x-2">
+                        <Button
+                          size="sm"
+                          variant="link"
+                          className="px-0"
+                          asChild
+                        >
+                          <Link href="/auth/email">Sign in with email</Link>
+                        </Button>
+                        <span>&#183;</span>
+                        <Button
+                          size="sm"
+                          variant="link"
+                          className="px-0"
+                          asChild
+                        >
+                          <Link href="/auth/reset">Forgot password?</Link>
+                        </Button>
+                      </div>
+
                       <FormMessage />
                     </FormItem>
                   )}
@@ -138,10 +149,10 @@ export const LoginForm = () => {
               </>
             )}
           </div>
-          <FormError message={error || urlError} />
+          <FormError message={error} />
           <FormSuccess message={success} />
           <Button type="submit" disabled={isPending} className="w-full">
-            {showTwoFactor ? "Confirm" : "Login"}
+            {showTwoFactor ? "Confirm" : "Sign in"}
           </Button>
         </form>
       </Form>

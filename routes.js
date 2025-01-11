@@ -6,6 +6,7 @@ export const publicRoutes = [
 ];
 
 export const authRoutes = [
+  "/auth/email",
   "/auth/sign-in",
   "/auth/sign-up",
   "/auth/error",
