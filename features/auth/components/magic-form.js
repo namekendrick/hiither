@@ -54,7 +54,7 @@ export const MagicForm = () => {
   };
 
   return (
-    <CardWrapper headerLabel="Welcome back">
+    <CardWrapper>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">

@@ -64,13 +64,13 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Welcome back"
+      headerLabel=""
       backButtonLabel="Don't have an account?"
       backButtonHref="/auth/sign-up"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
+          <div className="space-y-2">
             {showTwoFactor && (
               <FormField
                 control={form.control}
@@ -129,7 +129,7 @@ export const LoginForm = () => {
                           className="px-0"
                           asChild
                         >
-                          <Link href="/auth/email">Sign in with email</Link>
+                          <Link href="/auth/email">Continue with email</Link>
                         </Button>
                         <span>&#183;</span>
                         <Button
@@ -138,7 +138,7 @@ export const LoginForm = () => {
                           className="px-0"
                           asChild
                         >
-                          <Link href="/auth/reset">Forgot password?</Link>
+                          <Link href="/auth/reset">Set a new password</Link>
                         </Button>
                       </div>
 

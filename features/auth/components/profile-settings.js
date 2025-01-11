@@ -80,7 +80,7 @@ export const ProfileSettings = () => {
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="John Doe"
+                          placeholder="Michael Scott"
                           disabled={isPending}
                         ></Input>
                       </FormControl>
@@ -99,7 +99,7 @@ export const ProfileSettings = () => {
                           <FormControl>
                             <Input
                               {...field}
-                              placeholder="Leslie.knope@example.com"
+                              placeholder="michael.scott@dundermifflin.com"
                               type="email"
                               disabled={isPending}
                             ></Input>
